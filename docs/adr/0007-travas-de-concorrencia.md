@@ -14,11 +14,11 @@ No teste sem as travas, 8 requisições simultâneas criaram 8 campeonatos num p
 Trava pessimista (`PESSIMISTIC_WRITE`) numa linha "dona" do que está sendo contado, sempre antes de ler:
 
 - **Criar campeonato:** trava a linha da `Organizacao`.
-- **Criar ou excluir participante, alterar campeonato com config, excluir campeonato e gerar:** trava a linha do `Campeonato`.
+- **Criar, alterar ou excluir participante, excluir campeonato e gerar:** trava a linha do `Campeonato`.
+- **Alterar campeonato (`PUT`):** não trava. Ele não conta nada, e o `@Version` rejeita a alteração concorrente com 409.
 
 A trava fica só nos métodos `buscarParaAtualizar` dos repositórios. Uma operação nunca adquire as duas travas, o que evita deadlock entre elas.
 
-O `@Version` continua valendo como segunda defesa, e a violação vira 409.
 
 ## Consequências
 
