@@ -97,7 +97,8 @@ Numa transação, travando a linha do campeonato (ADR 0007):
 2. **Idempotência:** se já há resultado com os mesmos valores, responde 200 sem alterar nada, qualquer que seja a `versao`.
 3. **Correção segura:** se já há resultado com valores diferentes, a `versao` é obrigatória e precisa bater com a atual. Faltando ou divergindo: 409 ("resultado alterado por outra pessoa, recarregue"). Sem resultado anterior, a `versao` é ignorada.
 4. **Validação pelo motor**, com o resultado novo incluído na lista:
-   - Pontos corridos: dados de prorrogação ou pênaltis são 422 (o formato não os usa). Empate proibido é 422.
+   - Pontos corridos: empate proibido é 422.
+   - Pontos corridos, dados de prorrogação ou pênaltis: 422 **antes do passo 3**, porque é a forma do pedido e repetir nunca seria aceito.
    - Mata-mata: `calcular` valida no contexto. `ResultadoInvalidoException` é 422 com a mensagem do motor, e nada é gravado.
 5. **Reconciliação** (ADR 0008) e resposta com a `PartidaResponse` atualizada.
 
@@ -119,6 +120,7 @@ Depois de cada alteração, o estado persistido fica igual ao do motor:
 - **Série:** os jogos que o motor marca `DESNECESSARIO` viram `DESNECESSARIA`, e voltam a `AGENDADA` se a correção reabrir a série. Seus resultados não existem, porque o motor recusa.
 - **Fase que abre:** cria `Fase`, `Confronto`s e `Partida`s quando o motor dá participantes a ela. A disputa de 3º e a Final abrem juntas.
 - **Fase que deixa de valer:** sem resultados, é apagada e recriada quando abrir de novo. Os participantes mudam de verdade.
+- **Confronto recriado:** um confronto cujos participantes mudaram, sem resultados, também é refeito e muda de id. Uma fase pode ficar com confronto antigo já lançado e confronto novo sem resultado.
 - **Status da `Fase`:** `ENCERRADA` com todos os confrontos decididos; volta a `EM_ANDAMENTO` se uma correção reabrir.
 
 `aceitaResultado` é `true` quando o campeonato está `EM_ANDAMENTO`, a partida não é `DESNECESSARIA` e, no mata-mata, todos os jogos anteriores do confronto têm resultado. Vale também para partida já com resultado, porque corrigir é lançar de novo.
@@ -134,6 +136,10 @@ Depois de cada alteração, o estado persistido fica igual ao do motor:
 - **Permitido com jogos em aberto**, de propósito: no plano grátis, gerar é irreversível e finalizar é o único jeito de liberar a vaga depois de um engano. A confirmação fica na tela (tarefa 08).
 - Encerra as fases em aberto. Campeonato `FINALIZADO` não aceita mais nenhuma alteração de resultado, e isso libera a vaga do plano.
 - Não existe finalização automática nem reabertura, para o organizador poder corrigir até decidir encerrar.
+
+### Leituras coerentes
+
+`/tabela`, `/classificacao` e `/chave` leem numa transação `REPEATABLE_READ`, para um lançamento simultâneo não produzir resposta incoerente (ex.: `partida` nula fora de `AGUARDANDO_PARTICIPANTES`).
 
 ### Sem N+1
 

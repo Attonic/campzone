@@ -21,5 +21,6 @@ Com correções de resultado, há duas fontes do mesmo fato: o que o motor calcu
 
 - Uma regra de competição muda só no motor, e corrigir resultado não precisa de caminho próprio.
 - Cada alteração recalcula a chave inteira. No limite de tamanho do MVP, o custo é desprezível.
-- Uma fase que deixa de valer é apagada e recriada, então seus ids mudam. Só acontece com fase sem resultados, e a API não promete id estável nesse caso.
+- Uma fase que deixa de valer é apagada e recriada, e um confronto cujos participantes mudaram é refeito, então seus ids mudam. Só acontece sem resultados, e a API não promete id estável nesse caso: requisição para partida apagada dá 404.
+- A recusa é por jogo, não por fase: corrigir é permitido se ninguém que já tem resultado mudar de adversário.
 - Remover resultados de uma fase para corrigir a anterior dá trabalho ao organizador, de propósito: resultado lançado nunca muda de participantes em silêncio.
