@@ -1,0 +1,10 @@
+# Código fica nos próprios repositórios (ADR 0001)
+backend/
+frontend/
+
+.env
+.env.*
+.claude/settings.local.json
+.idea/
+.vscode/
+.DS_Store
