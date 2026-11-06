@@ -59,7 +59,7 @@ As regras do projeto ficam no [`CLAUDE.md`](CLAUDE.md) e nos `CLAUDE.md` de cada
 | Cadastro, login com JWT e isolamento multi-tenant | Pronto |
 | Painel do admin da plataforma | Pronto |
 | Motor de competição: pontos corridos | Pronto |
-| Motor de competição: mata-mata | Em revisão |
+| Motor de competição: mata-mata | Pronto |
 | API de campeonatos, partidas e resultados | A fazer |
 | Telas de campeonato e página pública | A fazer |
 
