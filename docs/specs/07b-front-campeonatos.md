@@ -118,7 +118,7 @@ Passos, com indicação de "Passo N de 4" e botões Voltar e Continuar. Voltar p
 - Desempates: montados sem lista livre, sempre nesta ordem, gerando `desempates`:
   1. Gols fora: caixa de seleção, visível só em Ida e volta. Trocar o tipo de confronto a remove.
   2. Prorrogação: caixa de seleção.
-  3. Decisão final, obrigatória: "Pênaltis" ou "Sorteio" (`radio`).
+  3. Decisão final, obrigatória: "Pênaltis" ou "Sorteio" (`radio`). Em Série, "Sorteio" fica desabilitado, com a explicação "Não vale em série.", e a escolha volta a Pênaltis ao trocar para Série, porque o motor recusa sorteio em série.
 - Seeding: Sorteio (`ALEATORIO`), Definida por você (`MANUAL`) ou Cabeças de chave (`CABECAS_DE_CHAVE`), com uma frase explicando cada opção e avisando que a posição de cada participante é informada ao cadastrá-lo.
 - Disputa de 3º lugar: caixa de seleção.
 
