@@ -57,7 +57,7 @@ Regras do backend que a tela precisa respeitar:
 - Lista na ordem da API, com estados de loading, erro e vazio. O vazio explica que são necessários pelo menos 2 para gerar.
 - **Em `RASCUNHO`:** adicionar (formulário curto no topo da seção; depois de adicionar, limpa o campo e devolve o foco a ele, para cadastrar vários em sequência), editar e excluir. Excluir tem confirmação inline, sem `window.confirm`.
 - **Depois de gerado:** só corrigir o nome. Não há adicionar, excluir nem seed editável. O `PUT` reenvia a seed atual.
-- **Seed:** o campo só aparece em mata-mata com seeding `MANUAL` ("Posição na chave", obrigatória na prática) ou `CABECAS_DE_CHAVE` ("Cabeça de chave", opcional). Explique em uma linha o que cada um significa. Fora desses casos, a seed vai `null` e não aparece. Campo vazio vai `null`, nunca `""`. A validação de unicidade e sequência é do motor e aparece no 422 da geração.
+- **Seed:** o campo só aparece em mata-mata com seeding `MANUAL` ("Posição na chave", obrigatória na prática) ou `CABECAS_DE_CHAVE` ("Cabeça de chave", opcional). Explique em uma linha o que cada um significa. Fora desses casos o campo não aparece: no cadastro a seed vai `null`; ao renomear, vai a seed atual do participante, mesmo oculta (mandar `null` apagaria a seed em rascunho e dá 409 depois de gerado). Campo vazio vai `null`, nunca `""`. A validação de unicidade e sequência é do motor e aparece no 422 da geração.
 - Erros: `erros[]` junto do campo e `detail` (nome repetido, limite do plano, status mudou) visível na seção. Depois de um 409 de status, recarregue o campeonato e os participantes.
 - Mutations invalidam os participantes **e** o campeonato (`totalParticipantes`).
 
